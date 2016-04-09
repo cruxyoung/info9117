@@ -13,3 +13,7 @@ create table user (
   passwd text not null
 );
 
+insert into user values (999, 'yang', 'yang');
+insert into user values (1000, '123', '123');
+insert into user values (1562, '111', '111');
+
