@@ -91,11 +91,9 @@ def login():
         passwordd = query_db('''select passwd from user where username = ?''',
                         [request.form['username']], one=True)
         password = request.form['password']
-        print(password)
-        print(passwordd[0])
-        print(str(passwordd))
-        '''if user is None:
-            error = 'Invalid username' '''
+        
+        if user is None:
+            error = 'Invalid username' 
         '''elif not check_password_hash(user['passwd'],
                                      request.form['password']):
             error = 'Invalid password'
@@ -103,13 +101,14 @@ def login():
             flash('You were logged in')
             session['user_id'] = user['user_id']
             return redirect(url_for('show_entries'))'''
+        if user is not None:
+    
+            if passwordd[0] == password:
+                flash('You were logged in')
             
-        if passwordd[0] == password:
-            flash('You were logged in')
-            
-            return redirect(url_for('show_entries'))
-        elif passwordd != password: 
-            error = "Invalid password"
+                return redirect(url_for('show_entries'))
+            elif passwordd != password: 
+                error = "Invalid password"
         
         
     return render_template('login.html', error=error)
