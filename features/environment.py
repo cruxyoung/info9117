@@ -4,8 +4,8 @@ import bluetest
 
 def before_all(ctx):
     ctx.server = bluetest
-    ctx.address = bluetest.address
-    ctx.thread = threading.Thread(target=ctx.server.serve)
+    ctx.address = 'http://127.0.0.1:5000'
+    ctx.thread = threading.Thread(target=ctx.server.serve_forever)
     ctx.thread.start()  # start flask app server
     ctx.browser = webdriver.Firefox()
 

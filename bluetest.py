@@ -14,22 +14,27 @@ from contextlib import closing
 
 # configuration
 DATABASE = '/tmp/flaskr.db'
-DEBUG = True
+DEBUG = False
+#DEBUG = True
+
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
-host="localhost"
-port="5000"
-address="http://{0}:{1}".format(host,port)
+
 
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-def serve():
-    app.run(host,port)
+def serve_forever():
+    app.run()
 
-
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError("Not running with Werkzeug server")
+    func()
+    
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
@@ -62,7 +67,10 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
-
+@app.route('/shutdown')
+def shutdown():
+    shutdown_server()
+    
 @app.route('/')
 def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc')
@@ -94,6 +102,7 @@ def login():
         
         if user is None:
             error = 'Invalid username' 
+            
         '''elif not check_password_hash(user['passwd'],
                                      request.form['password']):
             error = 'Invalid password'
@@ -146,6 +155,5 @@ def register():
 
 
 if __name__ == '__main__':
-    app.run()
-
+    serve_forever()
 
