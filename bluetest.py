@@ -116,6 +116,7 @@ def login():
     
             if passwordd[0] == password:
                 flash('You were logged in')
+                session['logged_in'] = True
             
                 return redirect(url_for('show_entries'))
             elif passwordd != password: 

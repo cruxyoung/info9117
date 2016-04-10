@@ -39,9 +39,8 @@ class BlueGardenTest(unittest.TestCase):
         assert 'Invalid username' in rv.data
         rv=self.login('yang', 'ya')
         assert 'Invalid password' in rv.data
-        
+       
     def test_register(self):
-        
         rv=self.register('yan','pwyan', 'pwyan')
         assert 'You were successfully registered and can login now' in rv.data
         rv=self.register('yan','pwyan', 'pwyn')
