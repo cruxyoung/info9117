@@ -73,6 +73,7 @@ def shutdown():
     
 @app.route('/')
 def show_entries():
+    session['register']=False
     all = query_db('''select * from user ''', one=True)
     print(all)
     cur = g.db.execute('select title, text from entries order by id desc')
@@ -81,6 +82,7 @@ def show_entries():
 
 @app.route('/add', methods=['POST'])
 def add_entry():
+    session['register']=False
     if not session.get('logged_in'):
         abort(401)
     g.db.execute('insert into entries (title, text) values (?, ?)',
@@ -92,6 +94,7 @@ def add_entry():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    session['register']=False
     error = None
     if request.method =='POST':
 
@@ -128,12 +131,15 @@ def login():
 
 @app.route('/logout')
 def logout():
+    session['register']=False
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
 
 @app.route('/register',methods=['GET', 'POST'])
 def register():
+    #this line is to make sure sign up button won't show in register page
+    session['register']=True
     error = None
     if request.method =='POST':
         if not request.form['username']:

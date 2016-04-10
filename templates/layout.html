@@ -9,6 +9,9 @@
   {% else %}
     <a href="{{ url_for('logout') }}">log out</a>
   {% endif %}
+  {% if not session.register %}
+    <a href="{{ url_for('register') }}">sign up</a>
+  {%endif%}
   </div>
   {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
